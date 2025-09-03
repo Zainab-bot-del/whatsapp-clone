@@ -1,259 +1,465 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChatGPT Clone + Microphone</title>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
-
-    body {
-        display: flex;
-        height: 100vh;
-        background-color: #000;
-        color: #fff;
-    }
-
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        background-color: #242423; /* new sidebar color */
-        display: flex;
-        flex-direction: column;
-        transition: width 0.3s;
-    }
-
-    .sidebar-top {
-        padding: 20px;
-    }
-
-    .logo {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 25px;
-        color: #fff;
-    }
-
-    .sidebar-item {
-        padding: 14px 15px;
-        margin-bottom: 10px;
-        position: relative;
-        cursor: pointer;
-        border-radius: 6px;
-        color: #e0e0e0; /* light text for better contrast */
-        transition: 0.2s;
-    }
-
-    .sidebar-item:hover {
-        background-color: #3b4f5c; /* lighter hover shade */
-    }
-
-    .shortcut {
-        position: absolute;
-        right: 15px;
-        color: #bbb; /* lighter for contrast */
-        font-size: 12px;
-        display: none;
-    }
-
-    .sidebar-item:hover .shortcut {
-        display: inline;
-    }
-
-    .sora-item {
-        margin-top: 40px;
-    }
-
-    /* Main Area */
-    .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        background-color: #000;
-    }
-
-    /* Centered content */
-    .main-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 25px;
-        text-align: center;
-    }
-
-    .status {
-        font-size: 18px;
-        color: #aaa;
-    }
-
-    /* Chat message */
-    .chat-box {
-        background-color: #111;
-        padding: 45px 50px;
-        border-radius: 20px;
-        border: 1px solid #222;
-        min-width: 500px;
-        font-size: 36px;
-        font-weight: bold;
-    }
-
-    /* Chat input with + button, input, and microphone */
-    .chat-input {
-        display: flex;
-        min-width: 600px;
-        position: relative;
-    }
-
-    .add-btn {
-        background-color: #111;
-        color: #fff;
-        border: 1px solid #222;
-        border-radius: 12px 0 0 12px;
-        padding: 0 20px;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    /* Tooltip below the + button */
-    .tooltip-box {
-        display: none;
-        position: absolute;
-        top: 40px;
-        left: 0;
-        background-color: #111;
-        border: 1px solid #222;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 14px;
-        width: 150px;
-        text-align: left;
-        z-index: 10;
-    }
-
-    .add-btn:hover .tooltip-box {
-        display: block;
-    }
-
-    .tooltip-box div {
-        background-color: #222;
-        margin-top: 5px;
-        padding: 5px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-    }
-
-    .tooltip-box div:hover {
-        background-color: #333;
-    }
-
-    /* Input box */
-    .chat-input input {
-        flex: 1;
-        padding: 20px 25px;
-        border: 1px solid #222;
-        border-left: none;
-        border-radius: 0;
-        outline: none;
-        background-color: #111;
-        color: #fff;
-        font-size: 20px;
-    }
-
-    .chat-input input::placeholder {
-        color: #aaa;
-        font-size: 20px;
-    }
-
-    /* Microphone button */
-    .mic-btn {
-        padding: 20px 25px;
-        border: 1px solid #222;
-        border-left: none;
-        background-color: #000;
-        color: #fff;
-        border-radius: 0 12px 12px 0;
-        cursor: pointer;
-        font-size: 22px;
-        position: relative;
-    }
-
-    /* Tooltip for mic button */
-    .mic-btn::after {
-        content: "Dictate";
-        position: absolute;
-        bottom: 50px; /* above the button */
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #111;
-        border: 1px solid #222;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        display: none;
-        white-space: nowrap;
-    }
-
-    .mic-btn:hover::after {
-        display: block;
-    }
-
-    .chat-input button:hover,
-    .add-btn:hover {
-        background-color: #111;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Web Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #00a884;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1600px;
+            height: 97vh;
+            margin: auto;
+            background-color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sidebar {
+            width: 30%;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: #f0f2f5;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            overflow: hidden;
+        }
+        
+        .user-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            color: #54656f;
+        }
+        
+        .search-container {
+            background-color: #fff;
+            padding: 8px 15px;
+        }
+        
+        .search-box {
+            background-color: #f0f2f5;
+            border-radius: 18px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box i {
+            color: #54656f;
+            margin-right: 10px;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+        
+        .chat-item {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+        }
+        
+        .chat-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .chat-info {
+            flex: 1;
+        }
+        
+        .chat-info-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .chat-name {
+            font-weight: 500;
+            color: #000;
+        }
+        
+        .chat-time {
+            font-size: 12px;
+            color: #667781;
+        }
+        
+        .chat-preview {
+            font-size: 14px;
+            color: #667781;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .main-chat {
+            flex: 1;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjNFMkU2QkYyMkE5QjExRUFBN0ZGQkY3MjhDNDk0Q0I3IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjNFMkU2QkYzMkE5QjExRUFBN0ZGQkY3MjhDNDk0Q0I3Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M0UyRTZCRjAyQTlCMTFFQUE3RkZCRjcyOEM0OTRDQjciIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6M0UyRTZCRjEyQTlCMTFFQUE3RkZCRjcyOEM0OTRDQjciLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6c9mdfAAAAoklEQVR42rSTsQrCQBBFn11qC0uxsLKwEQsrG/8glX9gY2dhYWMjFjY2NqKFKHZWFhZWIopgIYidnYUgNnZ2FoLY2VkIYmdnIYidnYUgdnYWgtjZWQhiZ2chiJ2dhSB2dhaC2NlZCGJnZyGInZ2FIHZ2FoLY2VkIYmdnIYidnYUgdnYWgtjZWQhiZ2chiJ2dhSB2dhaC2NlZCGJnZyGI3R8WggwA8lWjLx6eLUkAAAAASUVORK5CYII=');
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background-color: #f0f2f5;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 1px solid #e0e0e0;
+        }
+        
+        .current-chat-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .current-chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .current-chat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .current-chat-name {
+            font-weight: 500;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            max-width: 65%;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            border-radius: 7.5px;
+            position: relative;
+            font-size: 15px;
+        }
+        
+        .message-in {
+            align-self: flex-start;
+            background-color: #fff;
+            box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+        }
+        
+        .message-out {
+            align-self: flex-end;
+            background-color: #d9fdd3;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #667781;
+            text-align: right;
+            margin-top: 3px;
+        }
+        
+        .chat-input {
+            background-color: #f0f2f5;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-left: 1px solid #e0e0e0;
+        }
+        
+        .chat-input i {
+            color: #54656f;
+            margin: 0 15px;
+            font-size: 20px;
+        }
+        
+        .input-box {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 9px 15px;
+        }
+        
+        .input-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+        
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 40%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                height: 100vh;
+            }
+            
+            .sidebar {
+                width: 100%;
+                display: none;
+            }
+            
+            .main-chat {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Sidebar -->
-<div class="sidebar">
-    <div class="sidebar-top">
-        <div class="logo">ChatGPT</div>
-        <div class="sidebar-item">New Chat <span class="shortcut">Ctrl+Shift+O</span></div>
-        <div class="sidebar-item">Search Chats <span class="shortcut">Ctrl+K</span></div>
-        <div class="sidebar-item">Library</div>
-        <div class="sidebar-item sora-item">Sora</div>
-        <div class="sidebar-item">GPTs</div>
-        <div class="sidebar-item" style="margin-top: 30px;">Chats</div>
-    </div>
-</div> 
-
-
-
-
-<!-- Main Area -->
-<div class="main">
-    <div class="main-content">
-        <div class="status">Saved memory full</div>
-        <div class="status">Upgrade your plan</div>
-
-        <div class="chat-box">What are you working on?</div>
-
-        <div class="chat-input">
-            <div class="add-btn">
-                +
-                <div class="tooltip-box">
-                    Add files and more
-                    <div>/</div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="header">
+                <div class="user-img">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzU0NjU2RiI+PHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0UzEzLjEgNiAxMiA2IDEwIDUuMSAxMCA0IDEwLjkgMiAxMiAyTTE2IDEwYzAgMi0yIDMtNC4xIDNTOCAxMiA4IDEwSDZjMCAyLjggMi4yIDUgNSA1aDJ2M0g3djJoMTB2LTJoLTN2LTNoMmMzLjkgMCA2LTIuMSA2LTYgMC0zLTItNC02LTRoLTJ2LTNoLTJ2M0gxMGMtMy45IDAtNiAxLTYgNXoiLz48L3N2Zz4=" alt="User">
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-status"></i>
+                    <i class="fas fa-comment-alt"></i>
+                    <i class="fas fa-ellipsis-v"></i>
                 </div>
             </div>
-            <input type="text" placeholder="Ask anything...">
-            <button class="mic-btn">🎙️</button>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search or start new chat">
+                </div>
+            </div>
+            
+            <div class="chat-list">
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwYTg4NCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJtMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDhtMC0xM2MtMi4yMSAwLTQgMS43OS00IDRzMS43OSA0IDQgNCA0LTEuNzkgNC00LTEuNzktNC00LTR6Ii8+PC9zdmc+" alt="Contact">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <div class="chat-name">John Doe</div>
+                            <div class="chat-time">2:45 PM</div>
+                        </div>
+                        <div class="chat-preview">
+                            <i class="fas fa-check-double" style="color: #00a884;"></i> Hey there! I'm using WhatsApp.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwYTg4NCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJtMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDhtMC0xM2MtMi4yMSAwLTQgMS43OS00IDRzMS43OSA0IDQgNCA0LTEuNzkgNC00LTEuNzktNC00LTR6Ii8+PC9zdmc+" alt="Contact">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <div class="chat-name">Jane Smith</div>
+                            <div class="chat-time">Yesterday</div>
+                        </div>
+                        <div class="chat-preview">
+                            <i class="fas fa-check-double"></i> Are we still meeting today?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwYTg4NCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJtMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDhtMC0xM2MtMi4yMSAwLTQgMS43OS00IDRzMS43OSA0IDQgNCA0LTEuNzkgNC00LTEuNzktNC00LTR6Ii8+PC9zdmc+" alt="Contact">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <div class="chat-name">Work Group</div>
+                            <div class="chat-time">Yesterday</div>
+                        </div>
+                        <div class="chat-preview">
+                            <i class="fas fa-check-double" style="color: #00a884;"></i> Sarah: Meeting postponed to tomorrow
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwYTg4NCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJtMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDhtMC0xM2MtMi4yMSAwLTQgMS43OS00IDRzMS43OSA0IDQgNCA0LTEuNzkgNC00LTEuNzktNC00LTR6Ii8+PC9zdmc+" alt="Contact">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <div class="chat-name">Mom</div>
+                            <div class="chat-time">10/12/2023</div>
+                        </div>
+                        <div class="chat-preview">
+                            <i class="fas fa-check-double" style="color: #00a884;"></i> Don't forget to call me later
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwYTg4NCI+PHBhdGggZD0iTTEyIDJDNy41OSAyIDQgNC41OSA0IDlzMy41OSA3IDcgNyA3LTMuNTkgNy03LTMuNTktNy03LTd6bTAgMTJjLTIuNzYgMC01LTIuMjQtNS01czIuMjQtNSA1LTUgNSAyLjI0IDUgNS0yLjI0IDUtNSA1em0wLTEwYy0yLjIxIDAtNCAxLjc5LTQgNHMxLjc5IDQgNCA0IDQtMS43OSA0LTQtMS43OS00LTQtNHoiLz48L3N2Zz4=" alt="Contact">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <div class="chat-name">David Johnson</div>
+                            <div class="chat-time">09/12/2023</div>
+                        </div>
+                        <div class="chat-preview">
+                            <i class="fas fa-check-double"></i> Can you send me those files?
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-chat">
+            <div class="chat-header">
+                <div class="current-chat-info">
+                    <div class="current-chat-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwYTg4NCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJtMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDhtMC0xM2MtMi4yMSAwLTQgMS43OS00IDRzMS43OSA0IDQgNCA0LTEuNzkgNC00LTEuNzktNC00LTR6Ii8+PC9zdmc+" alt="Contact">
+                    </div>
+                    <div class="current-chat-details">
+                        <div class="current-chat-name">John Doe</div>
+                        <div class="current-chat-status" style="font-size: 13px; color: #667781;">online</div>
+                    </div>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-paperclip"></i>
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
+            </div>
+            
+            <div class="chat-messages">
+                <div class="message message-in">
+                    <div class="message-text">Hey there! How are you doing?</div>
+                    <div class="message-time">10:30 AM</div>
+                </div>
+                
+                <div class="message message-out">
+                    <div class="message-text">I'm good, thanks! Just working on a new project.</div>
+                    <div class="message-time">10:32 AM</div>
+                </div>
+                
+                <div class="message message-in">
+                    <div class="message-text">That's great! What kind of project?</div>
+                    <div class="message-time">10:33 AM</div>
+                </div>
+                
+                <div class="message message-out">
+                    <div class="message-text">It's a web development project. Building a responsive website.</div>
+                    <div class="message-time">10:35 AM</div>
+                </div>
+                
+                <div class="message message-in">
+                    <div class="message-text">Sounds interesting! I've been learning some web development too.</div>
+                    <div class="message-time">10:37 AM</div>
+                </div>
+                
+                <div class="message message-out">
+                    <div class="message-text">Awesome! We should collaborate on something sometime.</div>
+                    <div class="message-time">10:40 AM</div>
+                </div>
+                
+                <div class="message message-in">
+                    <div class="message-text">Definitely! Let me know when you have some free time.</div>
+                    <div class="message-time">10:42 AM</div>
+                </div>
+                
+                <div class="message message-out">
+                    <div class="message-text">Will do! 😊</div>
+                    <div class="message-time">10:43 AM</div>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <i class="far fa-grin"></i>
+                <i class="fas fa-paperclip"></i>
+                <div class="input-box">
+                    <input type="text" placeholder="Type a message">
+                </div>
+                <i class="fas fa-microphone"></i>
+            </div>
         </div>
     </div>
-</div>
 
+    <script>
+        // Simple script to make the chat items clickable (non-functional)
+        document.querySelectorAll('.chat-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.chat-item').forEach(chat => {
+                    chat.style.backgroundColor = '#fff';
+                });
+                
+                // Add active style to clicked item
+                this.style.backgroundColor = '#f0f2f5';
+            });
+        });
+    </script>
 </body>
 </html>
