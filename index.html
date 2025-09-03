@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatGPT Clone + Microphone</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        display: flex;
+        height: 100vh;
+        background-color: #000;
+        color: #fff;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background-color: #242423; /* new sidebar color */
+        display: flex;
+        flex-direction: column;
+        transition: width 0.3s;
+    }
+
+    .sidebar-top {
+        padding: 20px;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        color: #fff;
+    }
+
+    .sidebar-item {
+        padding: 14px 15px;
+        margin-bottom: 10px;
+        position: relative;
+        cursor: pointer;
+        border-radius: 6px;
+        color: #e0e0e0; /* light text for better contrast */
+        transition: 0.2s;
+    }
+
+    .sidebar-item:hover {
+        background-color: #3b4f5c; /* lighter hover shade */
+    }
+
+    .shortcut {
+        position: absolute;
+        right: 15px;
+        color: #bbb; /* lighter for contrast */
+        font-size: 12px;
+        display: none;
+    }
+
+    .sidebar-item:hover .shortcut {
+        display: inline;
+    }
+
+    .sora-item {
+        margin-top: 40px;
+    }
+
+    /* Main Area */
+    .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #000;
+    }
+
+    /* Centered content */
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        text-align: center;
+    }
+
+    .status {
+        font-size: 18px;
+        color: #aaa;
+    }
+
+    /* Chat message */
+    .chat-box {
+        background-color: #111;
+        padding: 45px 50px;
+        border-radius: 20px;
+        border: 1px solid #222;
+        min-width: 500px;
+        font-size: 36px;
+        font-weight: bold;
+    }
+
+    /* Chat input with + button, input, and microphone */
+    .chat-input {
+        display: flex;
+        min-width: 600px;
+        position: relative;
+    }
+
+    .add-btn {
+        background-color: #111;
+        color: #fff;
+        border: 1px solid #222;
+        border-radius: 12px 0 0 12px;
+        padding: 0 20px;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    /* Tooltip below the + button */
+    .tooltip-box {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background-color: #111;
+        border: 1px solid #222;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 14px;
+        width: 150px;
+        text-align: left;
+        z-index: 10;
+    }
+
+    .add-btn:hover .tooltip-box {
+        display: block;
+    }
+
+    .tooltip-box div {
+        background-color: #222;
+        margin-top: 5px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .tooltip-box div:hover {
+        background-color: #333;
+    }
+
+    /* Input box */
+    .chat-input input {
+        flex: 1;
+        padding: 20px 25px;
+        border: 1px solid #222;
+        border-left: none;
+        border-radius: 0;
+        outline: none;
+        background-color: #111;
+        color: #fff;
+        font-size: 20px;
+    }
+
+    .chat-input input::placeholder {
+        color: #aaa;
+        font-size: 20px;
+    }
+
+    /* Microphone button */
+    .mic-btn {
+        padding: 20px 25px;
+        border: 1px solid #222;
+        border-left: none;
+        background-color: #000;
+        color: #fff;
+        border-radius: 0 12px 12px 0;
+        cursor: pointer;
+        font-size: 22px;
+        position: relative;
+    }
+
+    /* Tooltip for mic button */
+    .mic-btn::after {
+        content: "Dictate";
+        position: absolute;
+        bottom: 50px; /* above the button */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #111;
+        border: 1px solid #222;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: none;
+        white-space: nowrap;
+    }
+
+    .mic-btn:hover::after {
+        display: block;
+    }
+
+    .chat-input button:hover,
+    .add-btn:hover {
+        background-color: #111;
+    }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="logo">ChatGPT</div>
+        <div class="sidebar-item">New Chat <span class="shortcut">Ctrl+Shift+O</span></div>
+        <div class="sidebar-item">Search Chats <span class="shortcut">Ctrl+K</span></div>
+        <div class="sidebar-item">Library</div>
+        <div class="sidebar-item sora-item">Sora</div>
+        <div class="sidebar-item">GPTs</div>
+        <div class="sidebar-item" style="margin-top: 30px;">Chats</div>
+    </div>
+</div> 
+
+
+
+
+<!-- Main Area -->
+<div class="main">
+    <div class="main-content">
+        <div class="status">Saved memory full</div>
+        <div class="status">Upgrade your plan</div>
+
+        <div class="chat-box">What are you working on?</div>
+
+        <div class="chat-input">
+            <div class="add-btn">
+                +
+                <div class="tooltip-box">
+                    Add files and more
+                    <div>/</div>
+                </div>
+            </div>
+            <input type="text" placeholder="Ask anything...">
+            <button class="mic-btn">🎙️</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
